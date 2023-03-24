@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="horizontal"
+	android:padding="16dp">
+
+	<ImageView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:background="@drawable/ic_baseline_menu_24"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		android:padding="16dp"
+		android:layout_gravity="end"/>
+
+	<View
+		android:layout_width="0dp"
+		android:layout_weight="1"
+		android:layout_height="0dp"/>
+
+	<ImageView
+		android:id="@+id/icnBookMark"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:background="@drawable/ic_bookmark_border"
+		android:layout_gravity="end"
+		android:padding="16dp"/>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>
+
+
