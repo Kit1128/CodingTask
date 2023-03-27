@@ -19,7 +19,6 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvAlbum"
-            android:name="com.example.codingtest.Fragment.ItemFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent"

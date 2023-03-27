@@ -7,16 +7,16 @@ import com.example.codingtest.retrofit.model.Album2
 @Dao
 interface AlbumDao {
     @Query("Select * From Album2")
-    fun getAllAsync(): LiveData<List<Album2>>
+    fun getAllAsync(): List<Album2>
 
     @Query("Select * From Album2 Where isBookmarked = 1")
-    fun getBookmarked(): LiveData<List<Album2>>
+    fun getBookmarked(): List<Album2>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(data: Album2)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(data: List<Album2>)
+    fun insertAll(data: List<Album2>): List<Long>
 
     @Query("UPDATE Album2 SET isBookmarked = 0 WHERE collectionId = :collectionId")
     fun removeBookmarked(collectionId: String)
@@ -31,8 +31,10 @@ interface AlbumDao {
     fun deleteAllAsync()
 
     @Transaction
-    fun deleteAndInsert(data: List<Album2>) {
+    fun deleteAndInsert(data: List<Album2>): Boolean {
         deleteAllAsync()
-        insertAll(data)
+        val insertedResult = insertAll(data)
+
+        return insertedResult.size == data.size
     }
 }

@@ -15,7 +15,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class AlbumViewModel: ViewModel() {
-    private var albumLiveData = MutableLiveData<SearchResult2>()
+    private var albumLiveData = MutableLiveData<SearchResult2?>()
 
     fun getSearchAlbums(act: MainActivity,
                         searchTerm: String,
@@ -28,6 +28,7 @@ class AlbumViewModel: ViewModel() {
                     response: Response<SearchResult2>
                 ) {
                     if(response.body() != null){
+                        Log.d("TAG",response.toString())
                         albumLiveData.postValue(response.body())
                         act.stopLoading()
                     }else{
@@ -36,12 +37,13 @@ class AlbumViewModel: ViewModel() {
                 }
 
                 override fun onFailure(call: Call<SearchResult2>, t: Throwable) {
+                    albumLiveData.postValue(null)
                     Log.d("TAG",t.message.toString())
                 }
             })
     }
 
-    fun observeAlbumListLiveData() : MutableLiveData<SearchResult2> {
+    fun observeAlbumListLiveData() : MutableLiveData<SearchResult2?> {
         return albumLiveData
     }
 }

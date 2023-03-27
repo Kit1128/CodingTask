@@ -29,15 +29,6 @@ class AlbumListAdapter(
         var album: Album2? = null
 
     }
-
-    private fun checkBookmark(album: Album2, itemAlbumBinding: ItemAlbumBinding) {
-        if (album.isBookmarked) {
-            itemAlbumBinding.btnBookMark.background = AppCompatResources.getDrawable(act, R.drawable.ic_bookmark_filled)
-        } else {
-            itemAlbumBinding.btnBookMark.background = AppCompatResources.getDrawable(act, R.drawable.ic_bookmark_border)
-        }
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumListAdapter.ViewHolder {
         return ViewHolder(
             ItemAlbumBinding.inflate(
@@ -49,28 +40,27 @@ class AlbumListAdapter(
     }
 
     override fun onBindViewHolder(holder: AlbumListAdapter.ViewHolder, position: Int) {
-//        val album = albumList[position]
-//        holder.bindItem(album)
+        holder.album = albumList[position]
+        Log.d("btnBookMark", "position = $position")
 
         holder.itemAlbumBinding.btnBookMark.setOnClickListener {
             if (holder.album?.isBookmarked == true) {
                 holder.album!!.isBookmarked = false
-                Log.d("AlbumListAdapter - btnBookMark onclick isBookmarked = false", holder.album.toString())
-
-                AppDatabase.getInstance(act).getAlbumDao()
-                    .removeBookmarked(holder.album!!.collectionId)
-                notifyDataSetChanged()
+                AppDatabase.getInstance(act).getAlbumDao().removeBookmarked(holder.album!!.collectionId)
+                Log.d("btnBookMark", "btnBookMark = false")
             } else {
                 holder.album?.isBookmarked = true
-                Log.d("AlbumListAdapter - btnBookMark onclick isBookmarked = true", holder.album.toString())
-
                 AppDatabase.getInstance(act).getAlbumDao().addBookmarked(holder.album!!.collectionId)
-
-                notifyDataSetChanged()
+                Log.d("btnBookMark", "btnBookMark = true")
             }
+            notifyItemChanged(position)
         }
 
-        holder.album = albumList[position]
+        if (holder.album?.isBookmarked == true) {
+            holder.itemAlbumBinding.btnBookMark.background = AppCompatResources.getDrawable(act, R.drawable.ic_bookmark_filled)
+        } else {
+            holder.itemAlbumBinding.btnBookMark.background = AppCompatResources.getDrawable(act, R.drawable.ic_bookmark_border)
+        }
 
         holder.itemAlbumBinding.txtName.text = holder.album?.collectionName
         holder.itemAlbumBinding.txtArtistName.text = holder.album?.artistName
@@ -82,17 +72,17 @@ class AlbumListAdapter(
             .load(holder.album?.artworkUrl100)
             .timeout(10000)
             .into(holder.itemAlbumBinding.imgAlbum)
-
-        checkBookmark(holder.album!!, holder.itemAlbumBinding)
-
     }
 
     override fun getItemCount(): Int {
+        Log.d("albumList.size", "albumList.size = ${albumList.size}")
         return albumList.size
     }
 
     fun updateAlbumList(albumList: List<Album2>) {
         this.albumList = albumList
+        Log.d("updateAlbumList.size", "albumList.size = ${albumList.size}")
+
         notifyDataSetChanged()
     }
 

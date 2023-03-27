@@ -44,5 +44,6 @@ abstract class BaseAct<VB: ViewBinding>: AppCompatActivity() {
         }
     }
 
+    fun setActionBarBtnBookmark(onClick:() -> Unit) {}
     abstract fun inflateLayout(layoutInflater: LayoutInflater) : VB
 }
